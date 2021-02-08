@@ -1,0 +1,18 @@
+---
+# Group vars for all hosts
+
+host: T-SEC-MAIL
+domain: tsec901g3.tk
+ip_address: "{{ ansible_default_ipv4.address }}"
+mail_fqdn: "{{ domain }}"
+smtp_fqdn: "smtp.{{ domain }}"
+postfixadmin_fqdn: "postfix.{{ domain }}"
+imap_fqdn: imap.{{ domain }}
+mail_user: admin
+email_for_updates: "{{ mail_user }}@{{ domain }}"
+
+# relay host
+relay:
+  use: true
+  smtp: "[smtp.gmail.com]:587"
+  mail: "thomas.otxoa@gmail.com"
