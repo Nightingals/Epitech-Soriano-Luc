@@ -1,0 +1,106 @@
+---
+- name: Compile OpenSSL
+  environment: "{{ working_env }}"
+  shell: |
+    make clean
+    ./config {{ openssl_config_args }}
+    make
+    make install
+  args:
+    chdir: "{{ src_dir }}openssl-{{ openssl_version }}"
+  register: result
+  tags: 
+    - install:openssl
+  
+- name: Print config output
+  debug:
+    msg: "{{ result.stdout_lines }}"
+  tags: 
+    - never
+    - debug
+    - debug-install:openssl
+
+- name: Compile UnixODBC
+  environment: "{{ working_env }}"
+  shell: |
+    make distclean
+    ./configure {{ unixodbc_config_args }}
+    make
+    make install
+  args:
+    chdir: "{{ src_dir }}unixODBC-{{ unixodbc_version }}"
+  register: result
+  tags: 
+    - install:unixodbc
+  
+- name: Print config output
+  debug:
+    msg: "{{ result.stdout_lines }}"
+  tags: 
+    - never
+    - debug
+    - debug-install:unixodbc
+
+- name: Compile Cyrus SASL (for sasl libs)
+  environment: "{{ working_env }}"
+  shell: |
+    make distclean
+    ./configure {{ cyrus_sasl_config_args }}
+    make
+    make install
+  args:
+    chdir: "{{ src_dir }}cyrus-sasl-{{ cyrus_sasl_version }}"
+  register: result
+  tags: 
+    - install:cyrus_sasl
+  
+- name: Print config output
+  debug:
+    msg: "{{ result.stdout_lines }}"
+  tags: 
+    - never
+    - debug
+    - debug-install:cyrus_sasl_1
+
+- name: Compile OpenLDAP
+  environment: "{{ working_env }}"
+  shell: |
+    make distclean
+    ./configure {{ openldap_config_args }}
+    make depend
+    make
+    make install
+  args:
+    chdir: "{{ src_dir }}openldap-{{ openldap_version }}"
+  register: result
+  tags: 
+    - install:openldap
+
+- name: Print config output
+  debug:
+    msg: "{{ result.stdout_lines }}"
+  tags: 
+    - never
+    - debug
+    - debug-install:openldap
+
+- name: Compile Cyrus SASL (with ldap mechanism)
+  environment: "{{ working_env }}"
+  shell: |
+    make distclean
+    ./configure {{ cyrus_sasl_config_args }}
+    make
+    make install
+  args:
+    chdir: "{{ src_dir }}cyrus-sasl-{{ cyrus_sasl_version }}"
+  register: result
+  tags: 
+    - install:cyrus_sasl
+  
+- name: Print config output
+  debug:
+    msg: "{{ result.stdout_lines }}"
+  tags: 
+    - never
+    - debug
+    - debug-install:cyrus_sasl_2
