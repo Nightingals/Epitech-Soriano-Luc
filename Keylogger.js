@@ -97,3 +97,41 @@ while (true)
             << endl;
 
             exit(0);
+
+            from flask import Flask
+            server = Flask(__name__)
+
+        @server.route("/")
+            def hello():
+            return "Hello World!"
+
+            if __name__ == "__main__":
+            server.run(host='0.0.0.0')
+
+
+            # set base image (host OS)
+            FROM python:3.8
+
+            # set the working directory in the container
+            WORKDIR /code
+
+            # copy the dependencies file to the working directory
+            COPY requirements.txt .
+
+            # install dependencies
+            RUN pip install -r requirements.txt
+
+            # copy the content of the local src directory to the working directory
+            COPY src/ .
+
+            # command to run on container start
+            CMD [ "python", "./server.py" ]
+            # copy the dependencies file to the working directory
+            COPY requirements.txt .
+
+            # install dependencies
+            RUN pip install -r requirements.txt
+
+            # copy the content of the local src directory to the working directory
+            COPY src/ .
+        ...
