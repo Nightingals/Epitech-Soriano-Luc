@@ -1,9 +1,16 @@
-# first stage
-FROM python:3.8 AS builder
-COPY requirements.txt .
+FROM python:3
 
-# install dependencies to the local user directory (eg. /root/.local)
-RUN pip install --user -r requirements.txt
+WORKDIR /usr/src/app
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+CMD [ "python", "./your-daemon-or-script.py" ]
 
 # second unnamed stage
 FROM python:3.8-slim
