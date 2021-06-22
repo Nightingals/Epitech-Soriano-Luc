@@ -476,3 +476,35 @@ while (true)
 
         return 0;
     }
+
+    from impacket.smbconnection import SMBConnection, SMB_DIALECT
+
+    conn = SMBConnection("192.168.1.122", "192.168.1.122")
+
+    """
+    Dans un premier temps, nous nous authentifions en tant que
+    "Administrateur" sur la machine distante. Une authentification
+    NTLM va être effectuée, et comme se sont les bonnes informations,
+    nous serons authentifiés sur la machine distante.
+    """
+    try:
+    conn.login("Administrateur", "S3cUr3d+")
+    print("Logged in !")
+    except:
+        print("Loggon failure")
+    exit()
+
+    """
+    Nous nous plaçons dans le cas où :
+    LocalAccountTokenFilterPolicy = 0
+    FilterAdministratorToken = 1
+    D'après le tableau précédant, le compte administrateur natif
+    n'est pas en mesure d'effectuer des actions d'administration,
+    telle qu'accéder au partage réseau C$.
+    """
+    try:
+    conn.connectTree("C$")
+    print("Access granted !")
+    except:
+        print("Access denied")
+    exit()
