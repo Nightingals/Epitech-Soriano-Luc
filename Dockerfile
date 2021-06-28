@@ -1,44 +1,32 @@
-FROM ghcr.io/linuxserver/baseimage-alpine:3.12
+FROM dockerfile/ubuntu
 
-# set version label
-ARG BUILD_DATE
-ARG VERSION
-ARG LDAP_VERSION
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="aptalca"
+# Add files.
+ADD bin/rabbitmq-start /usr/local/bin/
 
+# Install RabbitMQ.
 RUN \
- echo "**** install build packages ****" && \
- apk add --no-cache --virtual=build-dependencies \
-	build-base \
-	libffi-dev \
-	openldap-dev \
-	python3-dev && \
- echo "**** install runtime packages ****" && \
- apk add --no-cache \
-	libffi \
-	libldap \
-	py3-pip \
-	python3 && \
- if [ -z ${LDAP_VERSION+x} ]; then \
-  LDAP_INSTALL="python-ldap"; \
- else \
-  LDAP_INSTALL="python-ldap==${LDAP_VERSION}"; \
- fi && \
- pip3 install -U --no-cache-dir \
-	pip && \
- pip install -U \
-	cryptography \
-	${LDAP_INSTALL} && \
- echo "**** cleanup ****" && \
- apk del --purge \
-	build-dependencies && \
- rm -rf \
-	/tmp/* \
-	/root/.cache/pip
+  wget -qO - https://www.rabbitmq.com/rabbitmq-signing-key-public.asc | apt-key add - && \
+  echo "deb http://www.rabbitmq.com/debian/ testing main" > /etc/apt/sources.list.d/rabbitmq.list && \
+  apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y rabbitmq-server && \
+  rm -rf /var/lib/apt/lists/* && \
+  rabbitmq-plugins enable rabbitmq_management && \
+  echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config && \
+  chmod +x /usr/local/bin/rabbitmq-start
 
-# copy local files
-COPY root/ /
+# Define environment variables.
+ENV RABBITMQ_LOG_BASE /data/log
+ENV RABBITMQ_MNESIA_BASE /data/mnesia
 
-# ports and volumes
-EXPOSE 8888 9000
+# Define mount points.
+VOLUME ["/data/log", "/data/mnesia"]
+
+# Define working directory.
+WORKDIR /data
+
+# Define default command.
+CMD ["rabbitmq-start"]
+
+# Expose ports.
+EXPOSE 5672
+EXPOSE 15672
