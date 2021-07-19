@@ -1,0 +1,27 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+
+
+int main()
+{
+    char hasher[256];
+    cout<< "Input a string!"<<endl;
+    cin>> hasher;
+    cout << endl;
+
+
+for(int x=0; x < strlen(hasher); x++)
+  {
+      hasher[x] += (3^x) * (x % 15);
+      if(hasher[x] > (255))
+      {
+          hasher[x] -= 256;
+      }
+  }
+
+  cout << hasher << endl;
+  system("pause");
+  return 1;
+}
